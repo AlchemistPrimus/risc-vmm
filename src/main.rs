@@ -1,10 +1,22 @@
 //! Entry point for our program
 mod cpu;
 pub mod utils;
-pub use utils::*;
+pub use utils::cpu_utils::{Memory};
+use cpu::{CPU};
 use cpu::*;
 
 fn main() {
-    let my_cpu = CPU{ registers: RegisterFile::Zero(8)};
-    println!("The cpu is: {:?}", my_cpu.ldr());
+    // Initializing an empty struct.
+    // This struct implemented default attribute.
+    // The CPU should be booted with some default values.
+    let mut my_cpu = CPU::boot();
+    let mut mem = Memory::new();
+    mem.push_data(Box::new(8));
+    //&my_cpu.boot();
+    my_cpu.lw("t0", 5);
+    my_cpu.lw("t1", 7);
+    my_cpu.run();
+    let res = my_cpu.sw(5);
+    //&my_cpu.read_opcode(&mem);
+    println!("The cpu is {:?}", res);
 }
