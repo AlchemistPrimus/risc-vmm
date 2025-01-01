@@ -2,49 +2,74 @@
 #![allow(unused_variables)]
 
 /// LIFO cpu stack. Will be used to handle function calls.
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Stack {
     pub data: Vec<u32>,
-    pub length: u8,
+    pub size: u32,
 }
 
 impl Stack {
-    /// Pushing data into the stack.
-    pub fn push_stack(&mut self, data: u32){
+    /// Initialize the stack. Returns an empty stack
+    pub fn new() -> Self {
+        Self {
+            size: 0,
+            data: Vec::new(),
+        }
+    }
+
+    /// Add an item onto the top of the stack.
+    pub fn push(&mut self, elem: u32){
         // Add item into the stack.
-        if self.stack_length() == 16 {
+        if self.size == 16 {
             // Handle when the stack is full
             println!("The stack is full");
             return;
         }
-        self.data.push(data);
-        self.length += 1;
+        self.data.push(elem);
+        self.size += 1;
     }
 
-    /// Poping data out of the stack.
-    pub fn pop_stack(&mut self) -> Option<u32> {
+    /// Removing top element from the stack. This valu is returned.
+    pub fn pop(&mut self) -> Option<u32> {
         // Remove an item from the stack.
-        if self.is_empty() {
+        if self.size == 0 {
             // Handle when the stack is empty
             println!("The stack is empty");
             return None;
         }
-        let data_: u32 = self.data.pop()?;
-        self.length -= 1;
-        Some(data_)
+        self.size -= 1;
+        self.data.pop()
     }
 
-    /// Checking if stack is empty
+    /// Test if the stack is empty
     pub fn is_empty(&self) -> bool {
-        if self.stack_length() == 0 {
-            return true;
-        }
-        false
+        self.size == 0
     }
 
     /// Checking the length of the stack
-    pub fn stack_length(&self) -> u8 {
-        self.length
+    pub fn len(&self) -> u32{
+        self.size
+    }
+
+    /// Clear the stack
+    fn clear(&mut self) {
+        self.size = 0;
+        self.data.clear();
+    }
+
+    /// Returning reference to the top element from the stack without removing it.
+    fn peek(&self) -> Option<&u32> {
+        if self.size == 0 {
+            return None;
+        }
+        self.data.get((self.size-1) as usize)
+    }
+
+    fn peek_mut(&mut self) -> Option<&mut u32>{
+        if self.size == 0 {
+            return None;
+        }
+        self.data.get_mut((self.size-1) as usize)
     }
 }
 

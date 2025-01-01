@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "risc_v_microprocessor"
+name = "RISC-VMM"
 version = "0.1.0"

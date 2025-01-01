@@ -35,8 +35,10 @@ pub trait Instructions {
     fn sw(&self, reg_no: u32) -> u32;
 
     /// Add two values in the register.
-    fn add(&mut self, reg1: u32, reg2: u32);
+    fn add(&mut self, reg1: u32, reg2: u32, reg3: u32);
 
+    /// Subract two registers.
+    fn sub(&mut self, reg1: u32, reg2: u32, reg3: u32);
 }
 
 impl Instructions for CPU {
@@ -54,16 +56,22 @@ impl Instructions for CPU {
         }
     }
 
-    fn add(&mut self, reg_no1: u32, reg_no2: u32) {
+   fn sub(&mut self, reg1: u32, reg2: u32, reg3: u32) {
+       // Subtract two operands. The first register is the destination register
+       let arg2 = self.registers.general_purpose_registers[reg2 as usize];
+       let arg3 = self.registers.general_purpose_registers[reg1 as usize];
+       self.registers.general_purpose_registers[reg1 as usize] = arg2 - arg3;
+   }
+
+    fn add(&mut self, reg1: u32, reg2: u32, reg3: u32) {
         // Add two operands.
         // This instruction works on temp registeres.
         // registers x5, x6, x7
-        let first_reg = self.registers.general_purpose_registers[reg_no1 as usize];
-        let second_reg = self.registers.general_purpose_registers[reg_no2 as usize];
-        println!("The values to be added are {} {}", first_reg, second_reg);
-        let (val, overflow_detected) = first_reg.overflowing_add(second_reg);
-        println!("The added value is {}", val);
-        self.registers.general_purpose_registers[reg_no1 as usize] = val;
+        let arg2 = self.registers.general_purpose_registers[reg2 as usize];
+        let arg3 = self.registers.general_purpose_registers[reg3 as usize];
+
+        let (val, overflow_detected) = arg2.overflowing_add(arg3);
+        self.registers.general_purpose_registers[reg1 as usize] = val;
 
         if overflow_detected {
             println!("An overflow has been detected");
@@ -123,8 +131,8 @@ impl CPU{
 
     pub fn run(&mut self) {
         // Execution the CPU instructions
-        self.add(5, 6);
-        println!("Th value saved on x1 register is {}", self.registers.general_purpose_registers[5 as usize]);
+        // self.add(8, 5, 6);
+        self.sub(8, 6, 5);
     }
 
     fn instruction_decoder(instr: u32) -> (String, u32){

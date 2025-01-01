@@ -18,7 +18,8 @@ This is a number that maps to an operation. It is important to help determine ho
 
 #### Registers   
 Fixed set of temporary storage placeholders for operands in the CPU. Here, we have 16 general purpose registers 
-which are x0, x1, ..., x15 and other special registers like the program counter.   
+which are x0, x1, ..., x15 and other special registers like the program counter(pc) which stores an instruction pointer 
+which points to the location in RAM where it's going to fetch the next instruction.   
 
 Uses load/store memory architecture. Instructions can only operate directly on the data in the registers. 
 Dedicated instructions, lw and sw are used to load or store data from or to the processor's internal registers.  

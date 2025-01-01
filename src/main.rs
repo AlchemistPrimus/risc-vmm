@@ -13,10 +13,10 @@ fn main() {
     let mut mem = Memory::new();
     mem.push_data(Box::new(8));
     //&my_cpu.boot();
-    my_cpu.lw("t0", 5);
-    my_cpu.lw("t1", 7);
+    my_cpu.lw("t0", 10);
+    my_cpu.lw("t1", 12);
     my_cpu.run();
-    let res = my_cpu.sw(5);
+    let res = my_cpu.sw(8);
     //&my_cpu.read_opcode(&mem);
-    println!("The cpu is {:?}", res);
+    println!("The operation value {:?}", res);
 }
