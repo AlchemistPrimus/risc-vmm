@@ -8,6 +8,26 @@ pub struct Stack {
     pub size: u32,
 }
 
+impl Iterator for Stack {
+    type Item = u32;
+    fn next(&mut self) => Options<Self::Item>{
+        if !self.0.is_empty(){
+            self.0.size -= 1;
+            self.0.data.pop()
+        } else {
+            None
+        }
+    }
+}
+
+impl IntoIterator for Stack {
+    type Item = u32;
+    type IntoIter: Iterator<Item=Self::Item>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
 impl Stack {
     /// Initialize the stack. Returns an empty stack
     pub fn new() -> Self {
